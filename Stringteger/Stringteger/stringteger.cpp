@@ -141,7 +141,14 @@ void Stringteger::subtract(int x)
 			bottom[botLen - i - 1] = result + 48;
 		}
 
-		setValue(bottom);
+		if (valueIsGreater)
+		{
+			setValue(bottom);
+		}
+		else
+		{
+			setValue('-' + bottom);
+		}
 		subtract(nextX);
 	}
 	else if (x < 0)
