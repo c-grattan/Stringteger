@@ -116,9 +116,9 @@ void Stringteger::subtract(int x)
 	{
 		//Get top and bottom values (like in a chimney sum)
 		std::string xStr = std::to_string(x);
-		bool valueIsLonger = xStr.length() < value.length();
-		std::string top = valueIsLonger ? xStr : value;
-		std::string bottom = valueIsLonger ? value : xStr;
+		bool valueIsGreater = !lessThan(xStr);
+		std::string top = valueIsGreater ? xStr : value;
+		std::string bottom = valueIsGreater ? value : xStr;
 
 		int nextX = 0;
 		int result;
