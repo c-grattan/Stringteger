@@ -72,16 +72,15 @@ void Stringteger::operator+(int x)
 	add(x);
 }
 
-void Stringteger::setValue(std::string value)
+void Stringteger::setValue(std::string val)
 {
-	int v = std::atoi(value.c_str());
-	this->value = std::to_string(v);
+	value = val;
 }
 
 bool Stringteger::lessThan(std::string val)
 {
-	int len = val.length(),
-		thisLen = value.length();
+	int len = (int)val.length(),
+		thisLen = (int)value.length();
 	if (thisLen < len)
 	{
 		return true;
@@ -131,7 +130,7 @@ void Stringteger::subtract(int x)
 			if (botCh < topCh)
 			{
 				result = (botCh + 10) - topCh;
-				nextX += pow(10, i + 1);
+				nextX += (int)pow(10, i + 1);
 			}
 			else
 			{

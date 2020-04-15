@@ -3,9 +3,12 @@
 
 int main()
 {
-	const int x = 567, y = 666666;
-	Stringteger s(std::to_string(y));
-	s.subtract(x);
-	std::cout << "Should be " << y - x << ": " << s.getValue() << std::endl;
+	const unsigned int zero = 0;
+	Stringteger s(std::to_string(zero - 1));
+	for (int i = 0; i < 10; i++)
+	{
+		std::cout << s.getValue() << std::endl;
+		s.add(1);
+	}
 	return 0;
 }
