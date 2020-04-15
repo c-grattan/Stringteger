@@ -12,5 +12,8 @@ public:
 	void add(int x);
 	void operator+(int x);
 
+	void subtract(int x);
+	void operator-(int x);
+
 	std::string getValue() { return value; }
 };

@@ -28,7 +28,7 @@ Stringteger::Stringteger(std::string value)
 
 void Stringteger::add(int x)
 {
-	if (x > 0)
+	if (x > 0) //Base case for recursion
 	{
 		//Get top and bottom values (like in a chimney sum)
 		std::string xStr = std::to_string(x);
@@ -66,4 +66,14 @@ void Stringteger::add(int x)
 void Stringteger::operator+(int x)
 {
 	add(x);
+}
+
+void Stringteger::subtract(int x)
+{
+	
+}
+
+void Stringteger::operator-(int x)
+{
+	subtract(x);
 }
