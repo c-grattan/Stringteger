@@ -3,8 +3,9 @@
 
 int main()
 {
-	Stringteger s("90");
-	s.add(78);
-	std::cout << "Should be 168: " << s.getValue() << std::endl;
+	const int x = 12334, y = 66678;
+	Stringteger s(std::to_string(x));
+	s.add(y);
+	std::cout << "Should be " << x + y << ": " << s.getValue() << std::endl;
 	return 0;
 }

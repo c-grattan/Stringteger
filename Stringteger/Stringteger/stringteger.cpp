@@ -28,23 +28,28 @@ Stringteger::Stringteger(std::string value)
 
 void Stringteger::add(int x)
 {
-	if (x)
+	if (x > 0)
 	{
+		//Get top and bottom values (like in a chimney sum)
 		std::string xStr = std::to_string(x);
 		bool valueIsLonger = xStr.length() < value.length();
 		std::string top = valueIsLonger ? xStr : value;
 		std::string bottom = valueIsLonger ? value : xStr;
 
+		//nextX holds any overflow that needs to be added after this iteration
 		int nextX = 0;
 		int result;
 		int topLen = top.length(), botLen = bottom.length();
+		char topCh, botCh;
 		for (int i = 0; i < topLen; i++)
 		{
-			result = (top[topLen - 1 - i] - 48) + (bottom[botLen - 1 - i] - 48);
+			topCh = top[topLen - i - 1] - 48;
+			botCh = bottom[botLen - i - 1] - 48;
+			result = botCh + topCh;
 			if (result > 9)
 			{
-				bottom[botLen - 1 - i] = '9';
-				nextX += result - 9;
+				bottom[botLen - 1 - i] = '0';
+				nextX += result * (int)pow(10, i);
 			}
 			else
 			{
@@ -52,6 +57,7 @@ void Stringteger::add(int x)
 			}
 		}
 
+		//Update value and add any overflow
 		value = bottom;
 		add(nextX);
 	}
