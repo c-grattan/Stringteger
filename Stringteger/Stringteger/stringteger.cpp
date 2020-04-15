@@ -131,6 +131,7 @@ void Stringteger::subtract(int x)
 			if (botCh < topCh)
 			{
 				result = (botCh + 10) - topCh;
+				nextX += pow(10, i + 1);
 			}
 			else
 			{
