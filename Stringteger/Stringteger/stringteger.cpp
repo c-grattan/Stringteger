@@ -26,13 +26,25 @@ Stringteger::Stringteger(std::string value)
 	}
 }
 
+void Stringteger::togglePositive()
+{
+	if (value[0] == '-')
+	{
+		setValue("100");
+	}
+	else
+	{
+		value = '-' + value;
+	}
+}
+
 void Stringteger::add(int x)
 {
 	if (x > 0) //Base case for recursion
 	{
 		//Get top and bottom values (like in a chimney sum)
 		std::string xStr = std::to_string(x);
-		bool valueIsLonger = xStr.length() < value.length();
+		bool valueIsLonger = xStr.length() < value[0] == '-' ? value.length() - 1 : value.length();
 		std::string top = valueIsLonger ? xStr : value;
 		std::string bottom = valueIsLonger ? value : xStr;
 

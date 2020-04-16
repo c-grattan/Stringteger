@@ -9,6 +9,8 @@ private:
 public:
 	Stringteger(std::string value);
 
+	void togglePositive();
+
 	void add(int x);
 	void operator+(int x);
 

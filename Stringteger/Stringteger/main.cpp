@@ -4,11 +4,11 @@
 int main()
 {
 	const unsigned int zero = 0;
-	Stringteger s(std::to_string(zero - 1));
-	for (int i = 0; i < 10; i++)
-	{
-		std::cout << s.getValue() << std::endl;
-		s.add(1);
-	}
+	Stringteger s("-100");
+	s.togglePositive();
+	std::cout << "Should be 100: " << s.getValue() << std::endl;
+	s.setValue("-100");
+	s.subtract(10);
+	std::cout << "Should be -110: " << s.getValue() << std::endl;
 	return 0;
 }
