@@ -28,14 +28,19 @@ Stringteger::Stringteger(std::string value)
 
 void Stringteger::togglePositive()
 {
-	if (value[0] == '-')
-	{
-		setValue("100");
-	}
-	else
+	if (isPositive())
 	{
 		value = '-' + value;
 	}
+	else
+	{
+		value = value.substr(1);
+	}
+}
+
+bool Stringteger::isPositive()
+{
+	return value[0] != '-';
 }
 
 void Stringteger::add(int x)
@@ -44,7 +49,7 @@ void Stringteger::add(int x)
 	{
 		//Get top and bottom values (like in a chimney sum)
 		std::string xStr = std::to_string(x);
-		bool valueIsLonger = xStr.length() < value[0] == '-' ? value.length() - 1 : value.length();
+		bool valueIsLonger = xStr.length() < (value[0] == '-' ? value.length() - 1 : value.length());
 		std::string top = valueIsLonger ? xStr : value;
 		std::string bottom = valueIsLonger ? value : xStr;
 
@@ -91,15 +96,23 @@ void Stringteger::setValue(std::string val)
 
 bool Stringteger::lessThan(std::string val)
 {
+	bool valIsPositive = val[0] != '-';
+
 	int len = (int)val.length(),
 		thisLen = (int)value.length();
+
+	if (valIsPositive != isPositive())
+	{
+		return valIsPositive; //Return true if given value is positive and stored value is negative
+	}
+
 	if (thisLen < len)
 	{
-		return true;
+		return valIsPositive; //Return true if there are less digits in the stored value, if both values are positive - false otherwise
 	}
 	else if (thisLen > len)
 	{
-		return false;
+		return valIsPositive; //..
 	}
 	else
 	{
@@ -109,7 +122,7 @@ bool Stringteger::lessThan(std::string val)
 			char vCh = val[i];
 			if (value[i] != val[i])
 			{
-				return ch < vCh;
+				return ch < vCh && valIsPositive;
 			}
 		}
 		return false;

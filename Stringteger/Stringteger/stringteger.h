@@ -11,6 +11,8 @@ public:
 
 	void togglePositive();
 
+	bool isPositive();
+
 	void add(int x);
 	void operator+(int x);
 
