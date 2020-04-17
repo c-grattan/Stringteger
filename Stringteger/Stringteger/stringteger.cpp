@@ -19,6 +19,7 @@ Stringteger::Stringteger(std::string value)
 	if (!isAllDigits(value))
 	{
 		std::cerr << "Cannot create stringteger with value " << value << ", is NaN" << std::endl;
+		this->value = "";
 	}
 	else
 	{
