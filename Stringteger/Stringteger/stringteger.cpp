@@ -92,7 +92,14 @@ void Stringteger::operator+(int x)
 
 void Stringteger::setValue(std::string val)
 {
-	value = val;
+	if (isAllDigits(val))
+	{
+		value = val;
+	}
+	else
+	{
+		std::cerr << "Cannot set value to: " << val << ", is NaN" << std::endl;
+	}
 }
 
 bool Stringteger::lessThan(std::string val)
