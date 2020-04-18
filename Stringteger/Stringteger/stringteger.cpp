@@ -4,7 +4,12 @@
 
 bool isAllDigits(std::string str)
 {
-	for (unsigned int i = 0; i < str.length(); i++)
+	if (!std::isdigit(str[0]) && str[0] != '-')
+	{
+		return false;
+	}
+
+	for (unsigned int i = 1; i < str.length(); i++)
 	{
 		if (!std::isdigit(str[i]))
 		{
@@ -27,21 +32,31 @@ Stringteger::Stringteger(std::string value)
 	}
 }
 
-void Stringteger::togglePositive()
+bool stringIsPositive(std::string value)
 {
-	if (isPositive())
+	return value[0] != '-';
+}
+
+void toggleStringPositivity(std::string* value)
+{
+	if (stringIsPositive(*value))
 	{
-		value = '-' + value;
+		*value = '-' + *value;
 	}
 	else
 	{
-		value = value.substr(1);
+		*value = value->substr(1);
 	}
+}
+
+void Stringteger::togglePositive()
+{
+	toggleStringPositivity(&value);
 }
 
 bool Stringteger::isPositive()
 {
-	return value[0] != '-';
+	return stringIsPositive(value);
 }
 
 void Stringteger::add(int x)
@@ -50,9 +65,13 @@ void Stringteger::add(int x)
 	{
 		//Get top and bottom values (like in a chimney sum)
 		std::string xStr = std::to_string(x);
-		bool valueIsLonger = xStr.length() < (value[0] == '-' ? value.length() - 1 : value.length());
-		std::string top = valueIsLonger ? xStr : value;
-		std::string bottom = valueIsLonger ? value : xStr;
+		std::string top;
+		std::string bottom;
+		{
+			bool valueIsLonger = xStr.length() < (value[0] == '-' ? value.length() - 1 : value.length());
+			top = valueIsLonger ? xStr : value;
+			bottom = valueIsLonger ? value : xStr;
+		}
 
 		//nextX holds any overflow that needs to be added after this iteration
 		int nextX = 0;

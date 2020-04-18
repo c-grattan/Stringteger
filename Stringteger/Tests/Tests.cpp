@@ -30,16 +30,36 @@ namespace Tests
 
 		TEST_METHOD(SetWorks)
 		{
-			expected = "1000";
+			expected = "600";
 			s.setValue(expected);
 			Assert().AreEqual(s.getValue(), expected);
 		}
 
 		TEST_METHOD(SetTestsIsNumerical)
 		{
-			expected = "";
+			expected = "500";
 			s.setValue(expected);
 			s.setValue("asdf");
+			Assert().AreEqual(s.getValue(), expected);
+		}
+
+		TEST_METHOD(IsPositive)
+		{
+			s.setValue("100");
+			Assert().IsTrue(s.isPositive());
+		}
+
+		TEST_METHOD(IsNegative)
+		{
+			s.setValue("-100");
+			Assert().IsFalse(s.isPositive());
+		}
+
+		TEST_METHOD(TogglePositive)
+		{
+			expected = "-250";
+			s.setValue("250");
+			s.togglePositive();
 			Assert().AreEqual(s.getValue(), expected);
 		}
 	};
