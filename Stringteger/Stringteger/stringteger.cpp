@@ -73,30 +73,39 @@ void Stringteger::add(int x)
 			bottom = valueIsLonger ? value : xStr;
 		}
 
-		//nextX holds any overflow that needs to be added after this iteration
-		int nextX = 0;
-		int result;
-		int topLen = (int)top.length(), botLen = (int)bottom.length();
-		char topCh, botCh;
-		for (int i = 0; i < topLen; i++)
+		if (isPositive())
 		{
-			topCh = top[topLen - i - 1] - 48;
-			botCh = bottom[botLen - i - 1] - 48;
-			result = botCh + topCh;
-			if (result > 9)
+			//nextX holds any overflow that needs to be added after this iteration
+			int nextX = 0;
+			int result;
+			int topLen = (int)top.length(), botLen = (int)bottom.length();
+			char topCh, botCh;
+			for (int i = 0; i < topLen; i++)
 			{
-				bottom[botLen - 1 - i] = '0';
-				nextX += result * (int)pow(10, i);
+				topCh = top[topLen - i - 1] - 48;
+				botCh = bottom[botLen - i - 1] - 48;
+				result = botCh + topCh;
+				if (result > 9)
+				{
+					bottom[botLen - 1 - i] = '0';
+					nextX += result * (int)pow(10, i);
+				}
+				else
+				{
+					bottom[botLen - 1 - i] = result + 48;
+				}
 			}
-			else
-			{
-				bottom[botLen - 1 - i] = result + 48;
-			}
-		}
 
-		//Update value and add any overflow
-		setValue(bottom);
-		add(nextX);
+			//Update value and add any overflow
+			setValue(bottom);
+			add(nextX);
+		}
+		else
+		{
+			const char* oldVal = value.c_str();
+			value = x;
+			subtract(std::atoi(oldVal));
+		}
 	}
 	else if (x < 0)
 	{
@@ -123,7 +132,7 @@ void Stringteger::setValue(std::string val)
 
 bool Stringteger::lessThan(std::string val)
 {
-	bool valIsPositive = val[0] != '-';
+	bool valIsPositive = stringIsPositive(val);
 
 	int len = (int)val.length(),
 		thisLen = (int)value.length();
@@ -139,7 +148,7 @@ bool Stringteger::lessThan(std::string val)
 	}
 	else if (thisLen > len)
 	{
-		return valIsPositive; //..
+		return !valIsPositive; //..
 	}
 	else
 	{
@@ -147,7 +156,7 @@ bool Stringteger::lessThan(std::string val)
 		{
 			char ch = value[i];
 			char vCh = val[i];
-			if (value[i] != val[i])
+			if (ch != vCh)
 			{
 				return ch < vCh && valIsPositive;
 			}
@@ -171,36 +180,45 @@ void Stringteger::subtract(int x)
 		std::string top = valueIsGreater ? xStr : value;
 		std::string bottom = valueIsGreater ? value : xStr;
 
-		int nextX = 0;
-		int result;
-		int topLen = (int)top.length(), botLen = (int)bottom.length();
-		char topCh, botCh;
-		for (int i = 0; i < topLen; i++)
+		if (isPositive())
 		{
-			topCh = top[topLen - i - 1] - 48;
-			botCh = bottom[botLen - i - 1] - 48;
-			if (botCh < topCh)
+			int nextX = 0;
+			int result;
+			int topLen = (int)top.length(), botLen = (int)bottom.length();
+			char topCh, botCh;
+			for (int i = 0; i < topLen; i++)
 			{
-				result = (botCh + 10) - topCh;
-				nextX += (int)pow(10, i + 1);
+				topCh = top[topLen - i - 1] - 48;
+				botCh = bottom[botLen - i - 1] - 48;
+				if (botCh < topCh)
+				{
+					result = (botCh + 10) - topCh;
+					nextX += (int)pow(10, i + 1);
+				}
+				else
+				{
+					result = botCh - topCh;
+				}
+
+				bottom[botLen - i - 1] = result + 48;
+			}
+
+			if (valueIsGreater)
+			{
+				setValue(bottom);
 			}
 			else
 			{
-				result = botCh - topCh;
+				setValue('-' + bottom);
 			}
-
-			bottom[botLen - i - 1] = result + 48;
-		}
-
-		if (valueIsGreater)
-		{
-			setValue(bottom);
+			subtract(nextX);
 		}
 		else
 		{
-			setValue('-' + bottom);
+			togglePositive();
+			add(x);
+			togglePositive();
 		}
-		subtract(nextX);
 	}
 	else if (x < 0)
 	{

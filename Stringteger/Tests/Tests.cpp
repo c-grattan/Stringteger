@@ -62,5 +62,36 @@ namespace Tests
 			s.togglePositive();
 			Assert().AreEqual(s.getValue(), expected);
 		}
+
+		TEST_METHOD(PositiveAddPositive)
+		{
+			s.setValue("500");
+			s.add(60);
+			expected = "560";
+			Assert().AreEqual(s.getValue(), expected);
+		}
+
+		TEST_METHOD(NegativeAddPositive)
+		{
+			s.setValue("-400");
+			s.add(60);
+			expected = "-340";
+		}
+
+		TEST_METHOD(PositiveSubtractPositive)
+		{
+			s.setValue("700");
+			s.subtract(70);
+			expected = "630";
+			Assert().AreEqual(s.getValue(), expected);
+		}
+
+		TEST_METHOD(NegativeSubtractPositive)
+		{
+			s.setValue("-900");
+			s.subtract(50);
+			expected = "-950";
+			Assert().AreEqual(s.getValue(), expected);
+		}
 	};
 }
