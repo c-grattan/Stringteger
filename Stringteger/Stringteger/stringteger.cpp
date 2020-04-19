@@ -102,9 +102,9 @@ void Stringteger::add(int x)
 		}
 		else
 		{
-			const char* oldVal = value.c_str();
-			value = x;
-			subtract(std::atoi(oldVal));
+			togglePositive();
+			subtract(x);
+			togglePositive();
 		}
 	}
 	else if (x < 0)

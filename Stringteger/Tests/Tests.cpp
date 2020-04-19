@@ -18,21 +18,21 @@ namespace Tests
 			//Also tests that getValue works
 			expected = "1000";
 			Stringteger constructorTest(expected);
-			Assert().AreEqual(constructorTest.getValue(), expected);
+			Assert().AreEqual(expected, constructorTest.getValue());
 		}
 
 		TEST_METHOD(ConstructorChecksIsNumerical)
 		{
 			expected = "";
 			Stringteger constructorTest("asdf");
-			Assert().AreEqual(constructorTest.getValue(), expected);
+			Assert().AreEqual(expected, constructorTest.getValue());
 		}
 
 		TEST_METHOD(SetWorks)
 		{
 			expected = "600";
 			s.setValue(expected);
-			Assert().AreEqual(s.getValue(), expected);
+			Assert().AreEqual(expected, s.getValue());
 		}
 
 		TEST_METHOD(SetTestsIsNumerical)
@@ -40,7 +40,7 @@ namespace Tests
 			expected = "500";
 			s.setValue(expected);
 			s.setValue("asdf");
-			Assert().AreEqual(s.getValue(), expected);
+			Assert().AreEqual(expected, s.getValue());
 		}
 
 		TEST_METHOD(IsPositive)
@@ -60,7 +60,7 @@ namespace Tests
 			expected = "-250";
 			s.setValue("250");
 			s.togglePositive();
-			Assert().AreEqual(s.getValue(), expected);
+			Assert().AreEqual(expected, s.getValue());
 		}
 
 		TEST_METHOD(PositiveAddPositive)
@@ -68,7 +68,7 @@ namespace Tests
 			s.setValue("500");
 			s.add(60);
 			expected = "560";
-			Assert().AreEqual(s.getValue(), expected);
+			Assert().AreEqual(expected, s.getValue());
 		}
 
 		TEST_METHOD(NegativeAddPositive)
@@ -76,6 +76,7 @@ namespace Tests
 			s.setValue("-400");
 			s.add(60);
 			expected = "-340";
+			Assert().AreEqual(expected, s.getValue());
 		}
 
 		TEST_METHOD(PositiveSubtractPositive)
@@ -83,7 +84,7 @@ namespace Tests
 			s.setValue("700");
 			s.subtract(70);
 			expected = "630";
-			Assert().AreEqual(s.getValue(), expected);
+			Assert().AreEqual(expected, s.getValue());
 		}
 
 		TEST_METHOD(NegativeSubtractPositive)
@@ -91,7 +92,23 @@ namespace Tests
 			s.setValue("-900");
 			s.subtract(50);
 			expected = "-950";
-			Assert().AreEqual(s.getValue(), expected);
+			Assert().AreEqual(expected, s.getValue());
+		}
+
+		TEST_METHOD(PositiveToNegative)
+		{
+			s.setValue("10");
+			s.subtract(90);
+			expected = "-80";
+			Assert().AreEqual(expected, s.getValue());
+		}
+
+		TEST_METHOD(NegativeToPositive)
+		{
+			s.setValue("-10");
+			s.add(90);
+			expected = "80";
+			Assert().AreEqual(expected, s.getValue());
 		}
 	};
 }
