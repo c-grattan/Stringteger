@@ -270,3 +270,59 @@ void Stringteger::operator-(std::string x)
 {
 	subtract(x);
 }
+
+void Stringteger::multiply(std::string x)
+{
+	if (isAllDigits(x))
+	{
+		bool positive;
+
+		{
+			bool xPos = stringIsPositive(x);
+			bool pos = isPositive();
+
+			positive = xPos == pos;
+
+			if (!pos)
+			{
+				togglePositive();
+			}
+			if (!xPos)
+			{
+				toggleStringPositivity(&x);
+			}
+		}
+
+		std::string val = value;
+		int xLen = x.length();
+		int valLength = value.length();
+
+		setValue("0");
+		for (int i = 0; i < valLength; i++)
+		{
+			for (int j = 0; j < xLen; j++)
+			{
+				char xChar = x[xLen - 1 - j] - 48;
+				char valChar = val[valLength - 1 - i] - 48;
+				int result = xChar * valChar * pow(10, i);
+				add(result);
+			}
+		}
+		setValue(positive ? value : ('-' + value));
+	}
+}
+
+void Stringteger::multiply(int x)
+{
+	multiply(std::to_string(x));
+}
+
+void Stringteger::operator*(std::string x)
+{
+	multiply(x);
+}
+
+void Stringteger::operator*(int x)
+{
+	multiply(x);
+}

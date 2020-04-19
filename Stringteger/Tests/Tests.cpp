@@ -117,5 +117,29 @@ namespace Tests
 			expected = "80";
 			Assert().AreEqual(expected, s.getValue());
 		}
+
+		TEST_METHOD(MultiplyTwoPositives)
+		{
+			expected = "240";
+			s.setValue("120");
+			s.multiply("2");
+			Assert().AreEqual(expected, s.getValue());
+		}
+
+		TEST_METHOD(MultiplyTwoNegatives)
+		{
+			expected = "500";
+			s.setValue("-250");
+			s.multiply("-2");
+			Assert().AreEqual(expected, s.getValue());
+		}
+
+		TEST_METHOD(MultiplyOneNegOnePos)
+		{
+			expected = "-700";
+			s.setValue("350");
+			s.multiply("-2");
+			Assert().AreEqual(expected, s.getValue());
+		}
 	};
 }

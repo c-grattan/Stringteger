@@ -28,4 +28,9 @@ public:
 
 	std::string getValue() { return value; }
 	void setValue(std::string value);
+
+	void multiply(std::string x);
+	void multiply(int x);
+	void operator*(std::string x);
+	void operator*(int x);
 };
