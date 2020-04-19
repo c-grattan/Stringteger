@@ -1,2 +1,4 @@
 ﻿  stringteger.cpp
+c:\users\fizzy\desktop\stringteger\stringteger\stringteger\stringteger.cpp(144): warning C4018: '<': signed/unsigned mismatch
+c:\users\fizzy\desktop\stringteger\stringteger\stringteger\stringteger.cpp(193): warning C4715: 'Stringteger::lessThan': not all control paths return a value
   Stringteger.vcxproj -> C:\Users\Fizzy\Desktop\Stringteger\Stringteger\Debug\Stringteger.lib

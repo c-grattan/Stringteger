@@ -59,61 +59,74 @@ bool Stringteger::isPositive()
 	return stringIsPositive(value);
 }
 
-void Stringteger::add(int x)
+void Stringteger::add(std::string xStr)
 {
-	if (x > 0) //Base case for recursion
+	if (isAllDigits(xStr))
 	{
-		//Get top and bottom values (like in a chimney sum)
-		std::string xStr = std::to_string(x);
-		std::string top;
-		std::string bottom;
+		int x = std::atoi(xStr.c_str());
+		if (x > 0) //Base case for recursion
 		{
-			bool valueIsLonger = xStr.length() < (value[0] == '-' ? value.length() - 1 : value.length());
-			top = valueIsLonger ? xStr : value;
-			bottom = valueIsLonger ? value : xStr;
-		}
-
-		if (isPositive())
-		{
-			//nextX holds any overflow that needs to be added after this iteration
-			int nextX = 0;
-			int result;
-			int topLen = (int)top.length(), botLen = (int)bottom.length();
-			char topCh, botCh;
-			for (int i = 0; i < topLen; i++)
+			//Get top and bottom values (like in a chimney sum)
+			std::string top;
+			std::string bottom;
 			{
-				topCh = top[topLen - i - 1] - 48;
-				botCh = bottom[botLen - i - 1] - 48;
-				result = botCh + topCh;
-				if (result > 9)
-				{
-					bottom[botLen - 1 - i] = '0';
-					nextX += result * (int)pow(10, i);
-				}
-				else
-				{
-					bottom[botLen - 1 - i] = result + 48;
-				}
+				bool valueIsLonger = xStr.length() < (value[0] == '-' ? value.length() - 1 : value.length());
+				top = valueIsLonger ? xStr : value;
+				bottom = valueIsLonger ? value : xStr;
 			}
 
-			//Update value and add any overflow
-			setValue(bottom);
-			add(nextX);
+			if (isPositive())
+			{
+				//nextX holds any overflow that needs to be added after this iteration
+				int nextX = 0;
+				int result;
+				int topLen = (int)top.length(), botLen = (int)bottom.length();
+				char topCh, botCh;
+				for (int i = 0; i < topLen; i++)
+				{
+					topCh = top[topLen - i - 1] - 48;
+					botCh = bottom[botLen - i - 1] - 48;
+					result = botCh + topCh;
+					if (result > 9)
+					{
+						bottom[botLen - 1 - i] = '0';
+						nextX += result * (int)pow(10, i);
+					}
+					else
+					{
+						bottom[botLen - 1 - i] = result + 48;
+					}
+				}
+
+				//Update value and add any overflow
+				setValue(bottom);
+				add(nextX);
+			}
+			else
+			{
+				togglePositive();
+				subtract(x);
+				togglePositive();
+			}
 		}
-		else
+		else if (x < 0)
 		{
-			togglePositive();
-			subtract(x);
-			togglePositive();
+			subtract(x * -1);
 		}
-	}
-	else if (x < 0)
-	{
-		subtract(x * -1);
 	}
 }
 
+void Stringteger::add(int x)
+{
+	add(std::to_string(x));
+}
+
 void Stringteger::operator+(int x)
+{
+	add(x);
+}
+
+void Stringteger::operator+(std::string x)
 {
 	add(x);
 }
@@ -122,7 +135,18 @@ void Stringteger::setValue(std::string val)
 {
 	if (isAllDigits(val))
 	{
-		value = val;
+		std::string newVal;
+		//Clear trailing zeroes
+		{
+			int i = 0;
+			while (val[i++] == '0') {}
+			i--;
+			while (i < val.length())
+			{
+				newVal += val[i++];
+			}
+		}
+		value = newVal;
 	}
 	else
 	{
@@ -132,36 +156,39 @@ void Stringteger::setValue(std::string val)
 
 bool Stringteger::lessThan(std::string val)
 {
-	bool valIsPositive = stringIsPositive(val);
+	if (isAllDigits(val))
+	{
+		bool valIsPositive = stringIsPositive(val);
 
-	int len = (int)val.length(),
-		thisLen = (int)value.length();
+		int len = (int)val.length(),
+			thisLen = (int)value.length();
 
-	if (valIsPositive != isPositive())
-	{
-		return valIsPositive; //Return true if given value is positive and stored value is negative
-	}
-
-	if (thisLen < len)
-	{
-		return valIsPositive; //Return true if there are less digits in the stored value, if both values are positive - false otherwise
-	}
-	else if (thisLen > len)
-	{
-		return !valIsPositive; //..
-	}
-	else
-	{
-		for (int i = 0; i < len; i++)
+		if (valIsPositive != isPositive())
 		{
-			char ch = value[i];
-			char vCh = val[i];
-			if (ch != vCh)
-			{
-				return ch < vCh && valIsPositive;
-			}
+			return valIsPositive; //Return true if given value is positive and stored value is negative
 		}
-		return false;
+
+		if (thisLen < len)
+		{
+			return valIsPositive; //Return true if there are less digits in the stored value, if both values are positive - false otherwise
+		}
+		else if (thisLen > len)
+		{
+			return !valIsPositive; //..
+		}
+		else
+		{
+			for (int i = 0; i < len; i++)
+			{
+				char ch = value[i];
+				char vCh = val[i];
+				if (ch != vCh)
+				{
+					return ch < vCh && valIsPositive;
+				}
+			}
+			return false;
+		}
 	}
 }
 
@@ -170,63 +197,76 @@ bool Stringteger::lessThan(Stringteger val)
 	return lessThan(val.getValue());
 }
 
-void Stringteger::subtract(int x)
+void Stringteger::subtract(std::string xStr)
 {
-	if (x > 0)
+	if (isAllDigits(xStr))
 	{
-		//Get top and bottom values (like in a chimney sum)
-		std::string xStr = std::to_string(x);
-		bool valueIsGreater = !lessThan(xStr);
-		std::string top = valueIsGreater ? xStr : value;
-		std::string bottom = valueIsGreater ? value : xStr;
-
-		if (isPositive())
+		int x = std::atoi(xStr.c_str());
+		if (isAllDigits(xStr) && x > 0)
 		{
-			int nextX = 0;
-			int result;
-			int topLen = (int)top.length(), botLen = (int)bottom.length();
-			char topCh, botCh;
-			for (int i = 0; i < topLen; i++)
+			//Get top and bottom values (like in a chimney sum)
+			bool valueIsGreater = !lessThan(xStr);
+			std::string top = valueIsGreater ? xStr : value;
+			std::string bottom = valueIsGreater ? value : xStr;
+
+			if (isPositive())
 			{
-				topCh = top[topLen - i - 1] - 48;
-				botCh = bottom[botLen - i - 1] - 48;
-				if (botCh < topCh)
+				int nextX = 0;
+				int result;
+				int topLen = (int)top.length(), botLen = (int)bottom.length();
+				char topCh, botCh;
+				for (int i = 0; i < topLen; i++)
 				{
-					result = (botCh + 10) - topCh;
-					nextX += (int)pow(10, i + 1);
+					topCh = top[topLen - i - 1] - 48;
+					botCh = bottom[botLen - i - 1] - 48;
+					if (botCh < topCh)
+					{
+						result = (botCh + 10) - topCh;
+						nextX += (int)pow(10, i + 1);
+					}
+					else
+					{
+						result = botCh - topCh;
+					}
+
+					bottom[botLen - i - 1] = result + 48;
+				}
+
+				if (valueIsGreater)
+				{
+					setValue(bottom);
 				}
 				else
 				{
-					result = botCh - topCh;
+					setValue('-' + bottom);
 				}
-
-				bottom[botLen - i - 1] = result + 48;
-			}
-
-			if (valueIsGreater)
-			{
-				setValue(bottom);
+				subtract(nextX);
 			}
 			else
 			{
-				setValue('-' + bottom);
+				togglePositive();
+				add(xStr);
+				togglePositive();
 			}
-			subtract(nextX);
 		}
-		else
+		else if (x < 0)
 		{
-			togglePositive();
-			add(x);
-			togglePositive();
+			add(x * -1);
 		}
-	}
-	else if (x < 0)
-	{
-		add(x * -1);
 	}
 }
 
+void Stringteger::subtract(int x)
+{
+	subtract(std::to_string(x));
+}
+
 void Stringteger::operator-(int x)
+{
+	subtract(x);
+}
+
+void Stringteger::operator-(std::string x)
 {
 	subtract(x);
 }

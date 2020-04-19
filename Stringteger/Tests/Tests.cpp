@@ -43,6 +43,13 @@ namespace Tests
 			Assert().AreEqual(expected, s.getValue());
 		}
 
+		TEST_METHOD(SetClearsZeroes)
+		{
+			expected = "100";
+			s.setValue("00" + expected);
+			Assert().AreEqual(expected, s.getValue());
+		}
+
 		TEST_METHOD(IsPositive)
 		{
 			s.setValue("100");
